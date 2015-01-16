@@ -1,0 +1,447 @@
+"config begin
+"impressive : http://sunxc.me/vim/vimrc.html
+"我的gvim配置
+"==========================================
+"General
+"==========================================
+" 设置vim打开目录
+cd e:\vimfiles
+
+" history存储长度。
+set history=1000       
+
+"检测文件类型
+filetype on
+" 针对不同的文件类型采用不同的缩进格式  
+filetype indent on               
+"允许插件  
+filetype plugin on
+"启动自动补全
+filetype plugin indent on
+
+" 非兼容vi模式。去掉讨厌的有关vi一致性模式，避免以前版本的一些bug和局限
+set nocompatible      
+set autoread          " 文件修改之后自动载入。
+set shortmess=atI       " 启动的时候不显示那个援助索马里儿童的提示
+
+" 取消备份。
+" Turn backup off, since most stuff is in SVN, git et.c anyway...
+set nobackup
+set nowb
+set noswapfile
+
+"粘贴时保持格式
+set paste
+"- 则点击光标不会换,用于复制
+set mouse-=a           " 在所有的模式下面打开鼠标。
+"set mouse =v
+set selection=exclusive  
+set selectmode=mouse,key
+
+" No annoying sound on errors
+" 去掉输入错误的提示声音
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+"==========================================
+" tab切换快捷键
+"==========================================
+":tabnew [++opt选项] ［＋cmd］ 文件            建立对指定文件新的tab
+":tabc       关闭当前的tab
+":tabo       关闭所有其他的tab
+":tabs       查看所有打开的tab
+":tabp      前一个
+":tabn      后一个
+"标准模式下：
+"gt , gT 可以直接在tab之间切换。
+":tabe a.txt   
+":tab split    # 将当前分屏的窗口移动到一个新开的tab中
+":closetab     # 关闭当前的tab
+":tab sball    # 为每一个buffer分配一个tab，buffer数小于tab数的时候有用（比如你不小心关了一个tab，或者你不小心开多个文件的时候没有加`-p`参数）
+":bd 关闭当前的buffer
+":bd num 关闭第几个buffer
+":bd filename 指定名字关闭buffer
+":sp横向分屏:vsp 竖向分屏
+"==========================上面的是使用示例=========================
+set showtabline=2
+:nn <M-1> 1gt
+:nn <M-2> 2gt
+:nn <M-3> 3gt
+:nn <M-4> 4gt
+:nn <M-5> 5gt
+:nn <M-6> 6gt
+:nn <M-7> 7gt
+:nn <M-8> 8gt
+:nn <M-9> 9gt
+:nn <M-0> :tablast<CR>
+
+"==========================================
+" 分屏切换快捷键
+"==========================================
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+
+"===========================================
+"访问系统剪切板，使ctrl+c ctrl+v可以使用
+"===========================================
+map <C-c> "+y
+map <C-v> "+p
+map <C-d> dd
+"映射ctrl+s为保存
+nmap <C-S> :update<CR>
+vmap <C-S> <C-C>:update<CR>
+imap <C-S> <C-O>:update<CR>
+"=========================================
+"移动代码
+"=========================================
+"nmap <M-j> mz:m+<cr>`z  
+"nmap <M-k> mz:m-2<cr>`z  
+"vmap <M-j> :m'>+<cr>`<my`>mzgv`yo`z 
+"vmap <M-k> :m'<-2<cr>`>my`<mzgv`yo`z  
+
+"=========================================
+"复制粘贴行
+"=========================================
+map <C-UP> yykp
+map <C-DOWN> yyp
+nmap <C-UP> yykp
+nmap <C-DOWN> yyp
+imap <C-UP> <ESC>yykpi
+imap <C-DOWN> <ESC>yypi
+map <A-UP> yyddkkp
+map <A-DOWN> yyddp
+nmap <A-UP> yyddkkp
+nmap <A-DOWN> yyddp
+imap <A-UP> <ESC>yyddkkpi
+imap <A-DOWN> <ESC>yyddpi
+
+" show and format
+"==========================================
+"显示行号：
+set number
+set nowrap                    " 取消换行。
+""为方便复制，用<F2>开启/关闭行号显示:
+nnoremap <F2> :set nonumber!<CR>:set foldcolumn=0<CR>
+
+
+"括号配对情况
+set showmatch
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+"设置文内智能搜索提示
+" 高亮search命中的文本。
+set hlsearch          
+" 搜索时忽略大小写
+set ignorecase
+" 随着键入即时搜索
+set incsearch
+" 有一个或以上大写字母时仍大小写敏感
+set smartcase
+
+" 代码折叠
+set foldenable
+" 折叠方法
+" manual    手工折叠
+" indent    使用缩进表示折叠
+" expr      使用表达式定义折叠
+" syntax    使用语法定义折叠
+" diff      对没有更改的文本进行折叠
+" marker    使用标记进行折叠, 默认标记是 {{{ 和 }}}
+set foldmethod=marker
+" 在左侧显示折叠的层次
+"set foldcolumn=4
+
+set tabstop=4                " 设置Tab键的宽度        [等同的空格个数]
+set shiftwidth=4
+set expandtab                " 将Tab自动转化成空格    [需要输入真正的Tab键时，使用 Ctrl+V + Tab]
+" 按退格键时可以一次删掉 4 个空格
+set softtabstop=4
+
+set ai "Auto indent
+set si "Smart indent
+
+"==========================================
+" status
+"==========================================
+"显示当前的行号列号：
+set ruler
+""在状态栏显示正在输入的命令
+set showcmd
+
+" Set 7 lines to the cursor - when moving vertically using j/k 上下滚动,始终在中间
+set so=7
+
+"set cursorline              " 突出显示当前行
+
+" 命令行（在状态行下）的高度，默认为1，这里是2
+"set cmdheight=2
+"set rulerformat=%20(%2*%<%f%=\ %m%r\ %3l\ %c\ %p%%%)
+"set statusline=%F%m%r%h%w\[POS=%l,%v][%p%%]\%{strftime(\"%d/%m/%y\ -\ %H:%M\")}
+set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
+" Always show the status line
+"set laststatus=2
+
+" vim目录树插件
+map <F10> :NERDTreeToggle<CR>
+
+"==========================================
+"colors and fonts
+"==========================================
+"开启语法高亮
+syntax enable
+syntax on
+
+"配色方案 三种,选一个
+"colorscheme darkblue          " 深蓝色配色方案。
+colorscheme sunxc
+"colorscheme desert " 经典配色方案。
+"set background=dark
+
+"同sublime text2
+"colorscheme molokai
+set t_Co=256
+
+" Set extra options when running in GUI mode
+if has("gui_running")
+    set guioptions-=T
+    set guioptions+=e
+    set t_Co=256
+    set guitablabel=%M\ %t
+endif
+set guifont=Monaco:h14          " 字体 && 字号  
+
+"==========================================
+" file encode
+"==========================================
+" 设置新文件的编码为 UTF-8
+set fileencoding=utf8
+"set enc=2byte-gb18030
+" 自动判断编码时，依次尝试以下编码：
+set fileencodings=ucs-bom,utf-8,gb18030,default
+" gb18030 最好在 UTF-8 前面，否则其它编码的文件极可能被误识为 UTF-8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+" 如遇Unicode值大于255的文本，不必等到空格再折行。
+set formatoptions+=m
+" 合并两行中文时，不在中间加空格：
+set formatoptions+=B
+
+"设置自动折行
+set wrap 
+"==========================================
+"others
+"==========================================
+
+autocmd! bufwritepost _vimrc source % " vimrc文件修改之后自动加载。 windows。
+autocmd! bufwritepost .vimrc source % " vimrc文件修改之后自动加载。 linux。
+
+
+" 自动完成 
+set completeopt=longest,menu
+" 增强模式中的命令行自动完成操作
+set wildmenu
+" Ignore compiled files
+set wildignore=*.o,*~,*.pyc
+
+" Python 文件的一般设置，比如不要 tab 等
+autocmd FileType python set tabstop=4 shiftwidth=4 expandtab
+"自动补全配置
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+
+au GUIEnter * simalt ~x "maximum the initial window
+
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
+" A buffer becomes hidden when it is abandoned
+"set hid
+
+" For regular expressions turn magic on
+set magic
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+set whichwrap+=<,>,h,l
+
+"pydiction 1.2 python auto complete
+let g:pydiction_location = '~/.vim/tools/pydiction/complete-dict'
+"defalut g:pydiction_menu_height == 15
+let g:pydiction_menu_height = 20 
+
+""""""""""""""""""""运行环境""""""""""""""""""""""""""""""
+" F5编译和运行C程序，F6编译和运行C++程序
+" C的编译和运行
+map <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+exec "w"
+exec "!gcc -Wall % -o %<"
+exec "! %<"
+endfunc
+ 
+" C++的编译和运行
+map <F6> :call CompileRunGpp()<CR>
+func! CompileRunGpp()
+exec "w"
+exec "!g++ -Wall % -o %<"
+exec "! %<"
+endfunc
+ 
+" Gvim标签定制
+"function ShortTabLabel ()
+"    let bufnrlist = tabpagebuflist (v:lnum)
+"    let label = bufname (bufnrlist[tabpagewinnr (v:lnum) -1])
+"    let filename = fnamemodify (label, ':t')
+"    return filename
+"endfunction
+"set guitablabel=%{ShortTabLabel()}
+
+" ######### 一键保存和编译 ######### "
+ "编译C源文件
+func! CompileGcc()
+exec "w"
+let compilecmd="!gcc -Wall -std=c99 "
+let compileflag="-o %<"
+exec compilecmd." % ".compileflag
+endfunc
+ 
+" 编译C++源文件
+func! CompileCpp()
+exec "w"
+let compilecmd="!g++ -Wall "
+let compileflag="-o %<"
+exec compilecmd." % ".compileflag
+endfunc
+ 
+" 编译&链接Go源文件
+func! CompileGo()
+exec "w"
+exec "!8g %"
+exec "!8l -o %<.exe %<.8"
+endfunc
+ 
+" 编译Haskell源文件
+func! CompileHaskell()
+exec "w"
+let compilecmd="!ghc --make "
+let compileflag="-o %<"
+exec compilecmd." % ".compileflag
+endfunc
+ 
+" 编译Java源文件
+func! CompileJava()
+exec "w"
+exec "!javac %"
+endfunc
+ 
+" 编译C#源文件
+func! CompileCs()
+exec "w"
+exec "!csc %"
+endfunc
+ 
+" 编译Gas源文件
+func! CompileGas()
+exec "w"
+exec "!gcc -Wall -ggdb -o %< %"
+endfunc
+ 
+" 运行Shell源文件
+func! RunShell()
+exec "w"
+exec "!sh %"
+endfunc
+ 
+" 运行Lua源文件
+func! RunLua()
+exec "w"
+exec "!lua %"
+endfunc
+ 
+" 运行Perl源文件
+func! RunPerl()
+exec "w"
+exec "!perl %"
+endfunc
+ 
+" 运行Python源文件
+func! RunPython()
+exec "w"
+exec "!python %"
+endfunc
+ 
+" 运行Ruby源文件
+func! RunRuby()
+exec "w"
+exec "!ruby %"
+endfunc
+ 
+" 根据文件类型自动选择相应的编译函数
+func! Rcode()
+exec "w"
+if &filetype == "c"
+exec "call CompileGcc()"
+elseif &filetype == "cpp"
+exec "call CompileCpp()"
+elseif &filetype == "go"
+exec "call CompileGo()"
+elseif &filetype == "haskell"
+exec "call CompileHaskell()"
+elseif &filetype == "java"
+exec "call CompileJava()"
+elseif &filetype == "cs"
+exec "call CompileCs()"
+elseif &filetype == "asm"
+exec "call CompileGas()"
+elseif &filetype == "sh"
+exec "call RunShell()"
+elseif &filetype == "lua"
+exec "call RunLua()"
+elseif &filetype == "perl"
+exec "call RunPerl()"
+elseif &filetype == "python"
+exec "call RunPython()"
+elseif &filetype == "ruby"
+exec "call RunRuby()"
+endif
+endfunc
+ 
+" 运行可执行文件
+func! Execute()
+exec "w"
+if &filetype == "c"
+exec "! %<"
+elseif &filetype == "cpp"
+exec "! %<"
+elseif &filetype == "go"
+exec "! %<"
+elseif &filetype == "haskell"
+exec "! %<"
+elseif &filetype == "java"
+exec "!java %<"
+elseif &filetype == "cs"
+exec "! %<"
+elseif &filetype == "asm"
+exec "! %<"
+elseif &filetype == "sh"
+exec "!sh %<.sh"
+elseif &filetype == "lua"
+exec "!lua %<.lua"
+elseif &filetype == "perl"
+exec "!perl %<.pl"
+elseif &filetype == "python"
+exec "!python %<.py"
+elseif &filetype == "ruby"
+exec "!ruby %<.rb"
+endif
+endfunc
+

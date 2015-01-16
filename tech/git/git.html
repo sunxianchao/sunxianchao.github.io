@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=1024, user-scalable=no">
+	<title>如何使用 git</title>
+	<!-- Replace path with correct path to deck.core.css. -->
+	<link rel="stylesheet" href="/static/deck.js/core/deck.core.css" type="text/css">
+	
+	<!-- Any other extension CSS files go here. -->
+	<link rel="stylesheet" href="/static/deck.js/extensions/goto/deck.goto.css">
+	<link rel="stylesheet" href="/static/deck.js/extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="/static/deck.js/extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="/static/deck.js/extensions/status/deck.status.css">
+	<link rel="stylesheet" href="/static/deck.js/extensions/hash/deck.hash.css">
+	<link rel="stylesheet" href="/static/deck.js/extensions/scale/deck.scale.css">
+
+	<!-- Style theme. More available in /themes/style/ or create your own. -->
+	<link rel="stylesheet" href="/static/deck.js/themes/style/web-2.0.css">
+	
+	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	<link rel="stylesheet" href="/static/deck.js/themes/transition/horizontal-slide.css">
+	
+	<script src="/static/deck.js/modernizr.custom.js"></script>
+</head>
+<body class="deck-container">
+
+<!-- Create any number of elements with class slide within the container -->
+<section class="slide" id="title-slide">
+	<h1>如何使用 git</h1>
+</section>
+
+<section class="slide" id="what-is-git">
+	<h2>什么是 git？</h2>
+	<ul>
+		<li class="slide" id="git-is-VCS">
+			<p><strong>VCS</strong> </p>
+			<ul>
+				<li>
+					<p>Version Control System，版本控制系统。一种记录若干文件内容变化,以便将来查阅特定版本修订情况的系统。</p>
+				</li>
+				<li>
+					<p>其它版本控制系统，如CVS，Subversion,Perforce等。</p>
+				</li>
+				<li>
+					<p>是由Linus Torvalds 为了更好地管理linux内核开发而创立的。</p>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-1">
+	<h2>工作方式</h2>
+	<ul>
+		<li class="slide">
+			<p>其它的 VCS 工作方式</p>
+			<p>在每个版本中记录着各个文件的具体差异，更新的内容</p>
+			<img src="/static/images/VCSs.png">
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-1">
+	<h2>工作方式</h2>
+	<ul>
+		<li>
+		<p>git 的工作方式</p>
+		<p>git 并不保存这些前后变化的差异数据，而是保存每次更新时的文件快照。</p>
+		<img src="/static/images/git.png">
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-1">
+	<h2>工作方式</h2>
+	<ul>
+		<li>
+			<p>在 Git 中的绝大多数操作都只需要访问本地文件和资源,不用连网。</p>
+		</li>
+		<li>
+			<p>在保存到 Git 之前,所有数据都要进行内容的校验和(checksum)计算,并将此结果作为数据的唯一标识和索引。</p>
+		</li>
+		<li>
+			<p>三种状态</p>
+			<ol>
+				<li>
+					<p><strong>modified</strong>：已修改</p>
+				</li>
+				<li>
+					<p><strong>staged</strong>：已暂存</p>
+				</li>
+				<li>
+					<p><strong>committed</strong>：已提交</p>
+				</li>
+			</ol>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-1">
+	<h2>工作方式</h2>
+	<img src="/static/images/states.png" style="float:right">
+	<ol>
+		<li>
+			<p>在工作目录中修改某些文件</p>
+		</li>
+		<li>
+			<p>对这些修改了的文件作快照,并保存到暂存区域</p>
+		</li>
+		<li>
+			<p>提交更新，将保存在暂存区域的文件快照转储到 git 目录中</p>
+		</li>
+	</ol>
+</section>
+
+<section class="slide" id="git-basic-init">
+	<h2>初始化</h2>
+	<ul>
+		<li class="slide">
+			<p>在git服务器上创建代码仓库，在 github 上新建 repository</p>
+		</li>
+		<li class="slide">
+			<p>创建本地 repository</p>
+			<ul>
+				<li class="slide">
+					<p>初始化：</p>
+					<pre><code>$ <strong>git init</strong>
+Initialized empty Git repository in e:\git\test</code></pre>
+					<p>git init 会在当前目录中创建“.git”目录，该目录是你当前仓库的所有快照数据的存储目录。</p>
+				</li>
+			</ul>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-status-init">
+    <h2>查看文件状态</h2>
+        <li class="slide">
+            <p>查看文件状态：</p>
+            <pre><code>$ <strong>git status</strong>
+# On branch master
+#
+# Initial commit
+#
+nothing to commit (create/copy files and use "git add" to track)</code></pre>
+        </li>
+</section>
+
+<section class="slide" id="git-basic-status">
+	<h2>添加文件</h2>
+	<ul>
+		<li>
+			<p>添加文件，查看文件状态：</p>
+			<pre><code>$ <strong>touch README</strong>
+$ <strong>ls</strong>
+README
+$ <strong>git status</strong>
+# On branch master
+# Initial commit
+# Untracked files:
+#   (use "git add [file]..." to include in what will be committed)
+#	README
+nothing added to commit but untracked files present (use "git add" to track)</code></pre>
+			<p>Untracked，显示未追踪。git 不会自动追踪新加入的文件，不会纳入版本管理。</p>
+		</li>
+	</ul>
+</section>
+<section class="slide" id="git-basic-add">
+	<h2>追踪</h2>
+	<ul>
+		<li>
+			<p>git add - 追踪文件，暂存文件：</p>
+			<pre><code>$ <strong>git add README</strong> 
+$ <strong>git status</strong>
+# On branch master
+# Initial commit
+# Changes to be committed:
+#   (use "git rm --cached [file]..." to unstage)
+#	new file:   README
+</code></pre>
+			<p>只要在 “Changes to be committed” 这行下面的,就说明是已暂存状态。</p>
+			<p>如果此时提交,那么该文件此时此刻的版本将被留存在历史记录中。</p>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-commit">
+	<h2>提交</h2>
+	<ul>
+		<li>
+			<p>git commit - 提交文件：</p>
+			<pre><code>$ <strong>git commit -m 'first commit'</strong>
+[master (root-commit) 26143a0] first commit
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 README
+$ <strong>git status</strong>
+# On branch master
+nothing to commit (working directory clean)</code></pre>
+			<p>git commit -m '' 后面附加提交说明信息。不加 -m 会自动打开默认文本编辑器以便提交说明信息</p>
+			<p>如果修改的文件之前已被追踪过，那么可以使用 git commit -am '' 暂存提交所有被追踪的文件，不需要进行 git add。但这样做会丢掉暂存区带来的好处。</p>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-rm">
+	<h2>移除</h2>
+	<ul>
+		<li>
+			<p>git rm - 移除文件：</p>
+			<pre><code>$ <strong>git rm README</strong>
+rm 'README'
+$ <strong>ls</strong>
+$ <strong>git status</strong>
+# On branch master
+# Changes to be committed:
+#   (use "git reset HEAD [file]..." to unstage)
+#	deleted:    README
+$ <strong>git commit -m 'delete README'</strong>
+[master f71c4d1] delete README
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+ delete mode 100644 README</code></pre>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-status">
+	<h2>文件状态</h2>
+	<ul>
+		<li>
+			<p>文件状态</p>
+			<img src="/static/images/file_status.png">
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-remote">
+	<h2>远程仓库</h2>
+	<ul>
+		<li class="slide">
+			<p>上传本地仓库：</p>
+			<pre><code>$ <strong>git push -u origin master</strong>
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 206 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:sunxianchao/test.git
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+</code></pre>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-push-help">
+<h2>git push 说明</h2>
+<ul>
+<li class="slide">
+    <p><pre><code>$ <strong>git push -u --help</strong> -u, --set-upstream    set upstream for git pull/status </code></pre> </p>
+    <p>设置远程和本地仓库的上传关联，只需要第一次 push 到远程仓库时使用。之后可直接<pre><code>git push</code></pre></p>
+<p>关联的过程实际上就是将origin 对应到git仓库的url，origin代表的就是远程仓库</p>
+</li>
+</ul>
+</section>
+
+<section class="slide" id="git-basic-clone">
+	<h2>从现有仓库克隆</h2>
+	<pre><code>$ <strong>git clone git@github.com:sunxianchao/test.git</strong>
+Cloning into 'git-clone'...
+remote: Counting objects: 11, done.
+remote: Compressing objects: 100% (4/4), done.
+remote: Total 11 (delta 0), reused 11 (delta 0)
+Receiving objects: 100% (11/11), done.</code></pre>
+	<p>git clone 直接将远程仓库克隆至本地，不需要再初始化。</p>
+</section>
+
+<section class="slide" id="git-basic-protocol">
+    <h2>git 协议介绍</h2>
+	<ol class="slide">
+		<li>
+			<p>http 地址，格式为 https://github.com/用户名/仓库名.git</p>
+			<p>push 需要输入用户名和密码</p>
+		</li>
+		<li>
+			<p>ssh 地址，格式为 git@github.com:用户名/仓库名.git</p>
+			<p>使用 ssh 密钥自动登录</p>
+		</li>
+		<li>
+			<p>git-readonly 地址，格式为 git://github.com/用户名/仓库名.git</p>
+			<p>只读, 不可 push 到此仓库的远程仓库。</p>
+		</li>
+	</ol>
+</section>
+
+<section class="slide" id="git-basic-pull">
+	<h2>抓取远程仓库数据</h2>
+	<pre><code>$ <strong>git pull</strong>
+remote: Counting objects: 5, done.
+remote: Total 3 (delta 0), reused 0 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From git@github.com:sunxianchao/test.git
+   541c754..4d4599a  master     -> origin/master
+Updating 541c754..4d4599a
+Fast-forward
+ README |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)</code></pre>
+ <p>pull 一般用做合并远程和本地分支，pull 操作会先从远程仓库抓取数据，然后自动与本地分支的数据合并。如果远程与本地有冲突，则需要手动合并冲突的文件</p>
+</section>
+
+<section class="slide" id="git-basic-revert">
+	<h2>撤销已提交文件</h2>
+	<p>任何时候,你都有可能需要撤消刚才所做的某些操作。</p>
+	<ul>
+		<li>
+			<p><strong>修改最后一次提交</strong>:有时候我们提交完了才发现漏掉了几个文件没有加,或者提交信息写错了。想要撤消刚才的提交操作,可以使用 --amend 选项重新提交:</p>
+			<pre><code>$ <strong>git commit --amend</strong></code></pre>
+		</li>
+    </ul>
+</section>
+
+<section class="slide" id="git-basic-reset">
+<h2>撤销已缓存的文件</h2>
+<ul>		
+<li>
+			<p><strong>取消已经暂存的文件</strong>：有时候不小心使用了 git add . 把所有文件都加到了暂存区域，又想要分开提交，这时候，输入 git status，git 会告诉你怎么做：</p>
+			<pre><code>$ <strong>git add.</strong>
+$ <strong>git status</strong>
+# On branch master
+# Changes to be committed:
+#   (use <strong>"git reset HEAD [file]..."</strong> to unstage)
+#       modified:    README
+#       modified:    a.txt
+#</code></pre>
+		</li>
+		<li>
+			<p><strong>取消对文件的修改</strong>：git checkout -- 文件名，即可抛弃文件修改的命令。</p>
+			<p><strong>注意</strong>：此操作会将文件恢复到上次提交时的状态。</p>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-branch-1">
+	<h2>分支</h2>
+	<p>由于git 创建一个分支是非常廉价的仅仅创建41个长度的字符串，指针进行移动一下就可以创建一个分支，因此git开发中是非常鼓励频繁的创建分支，也因此衍生出这种典型的工作模式</p>
+	<ul>
+		<li>
+			<p>长期分支模式:</p>
+		</li>
+		<li>
+			<p>一个项目可以同时拥有多个开放的分支，每个分支用于完成特定的任务，随着开发的推进，你可以随时把某个特性分支的成果并到其他分支中。如仅在 master 分支中保留完全稳定的代码，即已经发布或即将发布的代码。与此同时，他们还有一个名为develop或next的平行分支，专门用于后续的开发，或仅用于稳定性测试</p>
+		</li>
+	</ul>
+</section>
+
+<section class="slide" id="git-basic-branch-2">
+	<h2>分支操作</h2>
+	<ol>
+		<li>
+			<p>查看分支：git branch</p>
+		</li>
+		<li>
+			<p>新建分支：git branch [branch name]</p>
+		</li>
+		<li>
+			<p>切换分支：git checkout [branch name]</p>
+		</li>
+		<li>
+			<p>删除分支：git branch -d [branch name]</p>
+		</li>
+		<li>
+			<p>提交分支到远程：git push origin [branch name]</p>
+		</li>
+		<li>
+			<p>分支的合并：git merge [branch name] 或者 git rebase</p>
+		</li>
+        <li>
+            <p>获取分支并合并：git pull(git fetch & git merage) 或者 git pull --rebase(git fetch & git rebase)</p>
+        </li>
+	</ol>
+</section>
+
+<section class="slide" id="git-basic-summary">
+	<h2>Git对文件管理流程总结</h2>
+    <img style='float:right;' src="/static/images/git_flow.png"/>
+	<div>
+			<p>1、Clone。第一次使用需要从远程服务器clone代码库，之后我们便可以在工作目录里任意地添加/删除/修改文件，然后提交到本地的仓库。</p>
+            <p>2、Git Add to Index。把我们新添加的或者已经修改的文件添加到git本地的索引库中，放到暂存区，等待提交。</p>
+            <p>3、Commit。对于已暂存的文件， 我们只需要在要保存更改的时候，做一个“提交到本地仓库”（Commit）的操作。那么该文件的更改便在本地有历史可寻。</p>
+            <p>4、 Push/Pull。同步本地仓库（Local Repository）和远程仓库（Remote Repository）的记录。这里用的动词很形象，Push就是把本地仓库的记录推送到服务器上，而Pull就是把服务器的记录拉到本地的仓库，pull是fetch和merage两个动作的合并。</p>
+	</div>
+</section>
+
+<!-- Other extension HTML snippets go here, at the bottom of the deck container. -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+<!-- deck.goto snippet -->
+<form action="." method="get" class="goto-form">
+	<label for="goto-slide">Go to slide:</label>
+	<input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+	<datalist id="goto-datalist"></datalist>
+	<input type="submit" value="Go">
+</form>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+<!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+<script src="//ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js"></script>
+<script>window.jQuery || document.write('<script src="/static/js/jquery-1.7.min.js"><\/script>')</script>
+<!-- Deck Core and extensions -->
+<script src="/static/deck.js/core/deck.core.js"></script>
+<script src="/static/deck.js/extensions/hash/deck.hash.js"></script>
+<script src="/static/deck.js/extensions/menu/deck.menu.js"></script>
+<script src="/static/deck.js/extensions/goto/deck.goto.js"></script>
+<script src="/static/deck.js/extensions/status/deck.status.js"></script>
+<script src="/static/deck.js/extensions/navigation/deck.navigation.js"></script>
+<script src="/static/deck.js/extensions/scale/deck.scale.js"></script>
+
+<!-- Add any other extension JS files here -->
+
+
+<!-- Initialize the deck. You can put this in an external file if desired. -->
+<script>
+	$(function() {
+		$.deck('.slide');
+	});
+</script>
+</body>
+<script type="text/javascript">
+var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
+document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F0900adfde37cbf94dad638bcca8ebc9d' type='text/javascript'%3E%3C/script%3E"));
+</script>
+</html>
