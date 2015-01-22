@@ -13,7 +13,7 @@ tags : [ConcurrentHashMap]
 线程不安全的 HashMap，是不能用于并发的情况因为他不是线程安全的，在多线程的环境下调用put 操作会引起死循环,导致 CPU 利用率接近 100%,所以在并发情况下不能使用 HashMap  
 
 线程安全的 HashTable，虽然是现成安全的但是效率低下，他内部是使用synchronized 来保证线程安全， 当一个线程访问 HashTable 的同步方法时,其他线程也要去访问同步方法时,就会进入阻塞状态。
-** 如线程 1 使用 put 进行添加元素,线程 2 不但不能使用 put 方法添加元素,并且也不能使用 get 方法来获取元素,所以竞争越激烈效率越低 **  
+**如线程 1 使用 put 进行添加元素,线程 2 不但不能使用 put 方法添加元素,并且也不能使用 get 方法来获取元素,所以竞争越激烈效率越低**  
 
 <!--break-->
 
@@ -29,7 +29,7 @@ tags : [ConcurrentHashMap]
 
 2. 初始化方法：  
 
-```
+{% highlight java%}
 	// 默认初始容量
     static final int DEFAULT_INITIAL_CAPACITY = 16;
     
@@ -51,7 +51,7 @@ tags : [ConcurrentHashMap]
 	// 在加锁前重试的次数
     static final int RETRIES_BEFORE_LOCK = 2;
 
-```  
+{% endhighlight %}  
 
 默认的配置初始化时的容量为16，当达到12个的时候就会扩容，并发数量是16个。  
 3. get操作：  
