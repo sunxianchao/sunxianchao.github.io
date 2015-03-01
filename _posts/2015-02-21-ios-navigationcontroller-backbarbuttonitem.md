@@ -15,10 +15,11 @@ tags : [ios,UINavigationController]
 2. 如果B没有自定义按钮，但是A视图的backBarButtonItem属性有自定义项，则显示这个自定义项；
 
 3. 如果前2条都没有，则默认显示一个后退按钮，后退按钮的标题是A视图的标题。
+
 <!--break-->
 按照这个规则，把UIBarButtonItem *backItem 设置返回按钮的这段代码放在A视图的pushViewController语句之前。这样B视图的后退按钮的标题变成我们设置的了。
 
-{%highlight ios%}
+{%highlight c%}
 UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStyleBordered target:nil action:nil];
 [self.navigationItem setBackBarButtonItem:backItem];
 [backItem release];
