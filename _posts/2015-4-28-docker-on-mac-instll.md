@@ -82,7 +82,6 @@ Server API version: 1.16
 Go version (server): go1.3.3  
 Git commit (server): 4595d4  
 {% endhighlight %}  
-6. 连接ssh boot2docker ssh 就可以进入到docker中  
 7. 下载第一个docker应用镜像 docker版的helloworld  
  {% highlight shell %} 
 docker@boot2docker:~$ docker run hello-world
