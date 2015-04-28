@@ -38,60 +38,12 @@ Docker就是一个应用程序执行容器，类似虚拟机的概念。但是�
 
 2. 安装完毕后就可以使用boot2docker命令来操作vm中的相关操作
 3. 初始化：boot2docker init，运行后可以看到如下日志信息  
-{% highlight shell%}  
-Latest release for boot2docker/boot2docker is v1.4  
-Downloading boot2docker ISO image...  
-Success: downloaded https://github.com/boot2docker/boot2docker/releases/download/v1.4/boot2docker.iso  
-to /Users/shengli/.boot2docker/boot2docker.iso  
-Generating public/private rsa key pair.  
-Your identification has been saved in /Users/shengli/.ssh/id_boot2docker.  
-Your public key has been saved in /Users/shengli/.ssh/id_boot2docker.pub.  
-The key fingerprint is:  
-ff:7a:53:95:e6:44:27:70:e1:ac:0a:b5:02:35:72:29 Sunxc@192.168.1.104
-The key's randomart image is:  
-+--[ RSA 2048]----+  
-{% endhighlight %}  
 从上面的日志可以看到的他会下载docker的镜像文件，然后生成密钥用于ssh登录使用
 
 4. 启动 boot2docker start  
-{% highlight shell %}  
-Sunxc:~$ boot2docker start
-Waiting for VM and Docker daemon to start...
-.............ooo
-Started.
-Writing /Users/Sunxc/.boot2docker/certs/boot2docker-vm/ca.pem
-Writing /Users/Sunxc/.boot2docker/certs/boot2docker-vm/cert.pem
-Writing /Users/Sunxc/.boot2docker/certs/boot2docker-vm/key.pem
-
-To connect the Docker client to the Docker daemon, please set:
-    export DOCKER_TLS_VERIFY=1
-    export DOCKER_HOST=tcp://192.168.59.103:2376
-    export DOCKER_CERT_PATH=/Users/Sunxc/.boot2docker/certs/boot2docker-vm  
-{% endhighlight %} 
 按照他的提示添加以上3个变量  
 5. 查看版本信息 boot2docker version  
-{% highlight shell %}  
-Sunxc:~$ docker version  
-Client version: 1.4.0  
-Client API version: 1.16  
-Go version (client): go1.3.3  
-Git commit (client): 4595d4f  
-OS/Arch (client): darwin/amd64  
-Server version: 1.4.0  
-Server API version: 1.16  
-Go version (server): go1.3.3  
-Git commit (server): 4595d4  
-{% endhighlight %}  
-7. 下载第一个docker应用镜像 docker版的helloworld  
- {% highlight shell %} 
-docker@boot2docker:~$ docker run hello-world
-Unable to find image 'hello-world:latest' locally
-Pulling repository hello-world
-91c95931e552: Download complete
-a8219747be10: Download complete
-Status: Downloaded newer image for hello-world:latest
-Hello from Docker.
-{% endhighlight %}
+6. 下载第一个docker应用镜像 docker版的helloworld  
 输出Hello from Docker.说明我们的docker安装是没有问题的
 
 ##Docker 实战 nginx 安装
@@ -108,3 +60,4 @@ docker pull registry.hub.docker.com/ubuntu:12.04
 4. 查看docker上运行的进程 docker ps -a
 5. 停止某个容器 docker stop containID
 
+### 有代码的地方都删除了，带上代码github 总是出错。。。
