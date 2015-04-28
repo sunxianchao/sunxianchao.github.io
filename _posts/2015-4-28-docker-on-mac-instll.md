@@ -82,6 +82,18 @@ Server API version: 1.16
 Go version (server): go1.3.3  
 Git commit (server): 4595d4  
 {% endhighlight %}  
+6. 连接ssh boot2docker ssh 就可以进入到docker中  
+7. 下载第一个docker应用镜像 docker版的helloworld  
+ {% highlight shell %} 
+docker@boot2docker:~$ docker run hello-world
+Unable to find image 'hello-world:latest' locally
+Pulling repository hello-world
+91c95931e552: Download complete
+a8219747be10: Download complete
+Status: Downloaded newer image for hello-world:latest
+Hello from Docker.
+{% endhighlight %}
+输出Hello from Docker.说明我们的docker安装是没有问题的
 
 ##Docker 实战 nginx 安装
 docker run --rm -i -t -p 80:80 nginx  
