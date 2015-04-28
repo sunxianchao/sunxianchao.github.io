@@ -38,7 +38,7 @@ Docker就是一个应用程序执行容器，类似虚拟机的概念。但是�
 
 2. 安装完毕后就可以使用boot2docker命令来操作vm中的相关操作
 3. 初始化：boot2docker init，运行后可以看到如下日志信息  
-{% hightlight shell%}  
+{% highlight shell%}  
 Latest release for boot2docker/boot2docker is v1.4  
 Downloading boot2docker ISO image...  
 Success: downloaded https://github.com/boot2docker/boot2docker/releases/download/v1.4/boot2docker.iso  
@@ -50,11 +50,11 @@ The key fingerprint is:
 ff:7a:53:95:e6:44:27:70:e1:ac:0a:b5:02:35:72:29 Sunxc@192.168.1.104
 The key's randomart image is:  
 +--[ RSA 2048]----+  
-{% endhightlight %}  
+{% endhighlight %}  
 从上面的日志可以看到的他会下载docker的镜像文件，然后生成密钥用于ssh登录使用
 
 4. 启动 boot2docker start  
-{% hightlight shell %}  
+{% highlight shell %}  
 Sunxc:~$ boot2docker start
 Waiting for VM and Docker daemon to start...
 .............ooo
@@ -67,10 +67,10 @@ To connect the Docker client to the Docker daemon, please set:
     export DOCKER_TLS_VERIFY=1
     export DOCKER_HOST=tcp://192.168.59.103:2376
     export DOCKER_CERT_PATH=/Users/Sunxc/.boot2docker/certs/boot2docker-vm  
-{% endhightlight %} 
+{% endhighlight %} 
 按照他的提示添加以上3个变量  
 5. 查看版本信息 boot2docker version  
-{% hightlight shell %}  
+{% highlight shell %}  
 Sunxc:~$ docker version  
 Client version: 1.4.0  
 Client API version: 1.16  
@@ -81,9 +81,9 @@ Server version: 1.4.0
 Server API version: 1.16  
 Go version (server): go1.3.3  
 Git commit (server): 4595d4  
-{% endhightlight %}  
+{% endhighlight %}  
 6. 连接ssh boot2docker ssh
-{% hightlight shell %} 
+{% highlight shell %} 
 Sunxc:~$ boot2docker ssh
                         ##        .
                   ## ## ##       ==
@@ -100,9 +100,9 @@ Sunxc:~$ boot2docker ssh
 |_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
 Boot2Docker version 1.4.0, build master : 69cf398 - Fri Dec 12 01:15:02 UTC 2014
 Docker version 1.4.0, build
-{% endhightlight %}  
+{% endhighlight %}  
 7. 下载第一个docker应用镜像 docker版的helloworld  
- {% hightlight shell %} 
+ {% highlight shell %} 
 docker@boot2docker:~$ docker run hello-world
 Unable to find image 'hello-world:latest' locally
 Pulling repository hello-world
@@ -110,7 +110,7 @@ Pulling repository hello-world
 a8219747be10: Download complete
 Status: Downloaded newer image for hello-world:latest
 Hello from Docker.
-{% endhightlight %}
+{% endhighlight %}
 输出Hello from Docker.说明我们的docker安装是没有问题的
 
 ##Docker 实战 nginx 安装
