@@ -82,36 +82,6 @@ Server API version: 1.16
 Go version (server): go1.3.3  
 Git commit (server): 4595d4  
 {% endhighlight %}  
-6. 连接ssh boot2docker ssh
-{% highlight shell %} 
-Sunxc:~$ boot2docker ssh
-                        ##        .
-                  ## ## ##       ==
-               ## ## ## ##      ===
-           /""""""""""""""""\___/ ===
-      ~~~ {~~ ~~~~ ~~~ ~~~~ ~~ ~ /  ===- ~~~
-           \______ o          __/
-             \    \        __/
-              \____\______/
- _                 _   ____     _            _
-| |__   ___   ___ | |_|___ \ __| | ___   ___| | _____ _ __
-| '_ \ / _ \ / _ \| __| __) / _` |/ _ \ / __| |/ / _ \ '__|
-| |_) | (_) | (_) | |_ / __/ (_| | (_) | (__|   <  __/ |
-|_.__/ \___/ \___/ \__|_____\__,_|\___/ \___|_|\_\___|_|
-Boot2Docker version 1.4.0, build master : 69cf398 - Fri Dec 12 01:15:02 UTC 2014
-Docker version 1.4.0, build
-{% endhighlight %}  
-7. 下载第一个docker应用镜像 docker版的helloworld  
- {% highlight shell %} 
-docker@boot2docker:~$ docker run hello-world
-Unable to find image 'hello-world:latest' locally
-Pulling repository hello-world
-91c95931e552: Download complete
-a8219747be10: Download complete
-Status: Downloaded newer image for hello-world:latest
-Hello from Docker.
-{% endhighlight %}
-输出Hello from Docker.说明我们的docker安装是没有问题的
 
 ##Docker 实战 nginx 安装
 docker run --rm -i -t -p 80:80 nginx  
