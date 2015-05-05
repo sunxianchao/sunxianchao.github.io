@@ -23,13 +23,13 @@ hadoop刚开始学习，想在docker上进行hadoop的分布式集群环境的�
 ### 格式化并启动
 1. bin/hadoop NameNode -format 格式化文件系统
 2. bin/start-all.sh启动
-<!-break->
+<!--break-->
 
 ## 1. docker安装hadoop镜像
 hadoop镜像我是在[hadoop-docker](https://github.com/sequenceiq/hadoop-docker)由于网络环境不是很好，我事先把hadoop-docker-2.6.0.tar.gz 还有jdk1.7都下载好了。  
 git clone https://github.com/sequenceiq/hadoop-docker.git  
 下载下来的项目 把下载好的文件都丢到这个项目里 修改了Dockerfile把这两个文件wget 的地方都修改成 ADD 我修改后的文件如下：
-{%highlight shell%}
+{%highlight c%}
 ADD jdk-7u51-linux-x64.rpm .
 ADD hadoop-2.6.0.tar.gz /usr/local/
 {%endhighlight%}  
@@ -37,29 +37,29 @@ ADD hadoop-2.6.0.tar.gz /usr/local/
 随后就可以进行docker build了，这个项目的README上已经给了提示按照上面的操作就可以，漫长的等待之后就总是惊喜不断，期间无数次断网，下载超时等问题，最后经过2个多小时终于完成了。
 
 ## 2. 启动容器制作自己的镜像
-{%highlight shell%}
+{%highlight c%}
 docker run -i -t sequenceiq/hadoop-docker:2.6.0 /etc/bootstrap.sh -bash
-{%endhighlight%}  
+{%endhighlight%} 
 上面的命令将直接运行/etc/bootstrap.sh并启动hadoop。
 修改/usr/local/hadoop/etc/hadoop/core-site.xml
-{%highlight shell%}
+{%highlight c%}
 <configuration>
     <property>
         <name>fs.defaultFS</name>
         <value>hdfs://master:9000</value>
     </property>    
 </configuration>
-{%endhighlight%}
+{%endhighlight%} 
 我们在启动其他hadoop slave的时候这个地方是需要都是写成master的地址，所以我们在这边统一修改
 修改/etc/bootstrap.sh
 将sed那一行注视点否则每次运行这个脚本都会被替换的
 退出容器后  
-{%highlight shell%}
+{%highlight c%}
 docker commit -a 'sunxc@vip.qq.com' -m 'add hadoop/bin to PATH' cfeb92e4eb3c  d
 evops/hadoop2.6:v0.3
-{%endhighlight%}  
+{%endhighlight%}   
 制作我们自己的镜像文件 
-{%highlight shell%} 
+{%highlight c%} 
 docker@boot2docker:~$ docker commit -a 'sunxc@vip.qq.com' -m 'add hadoop/bin to PATH' cfeb92e4eb3c  d
 evops/hadoop2.6:v0.3
 ef9da5d858554d0d20546088cb0d20e5239ae5f4c8b36d5a1bd94c0d980698d7
@@ -81,11 +81,11 @@ hostname、hosts配置在容器内修改了，只能在本次容器生命周期�
 这里只为学习，就手动修改hosts。只不过每次都得改，这里不知道如何处理，docker也是刚刚入门如果有知道的请高手指点一下！！
 
 启动容器
-{%highlight shell%} 
+{%highlight c%} 
 docker run -h master --name master_host -idt devops/hadoop2.6:v0.3 /bin/bash
 docker run -h slave --name slave_host -idt devops/hadoop2.6:v0.3 /bin/bash
 docker run -h slave2 --name slave2_host -idt devops/hadoop2.6:v0.3 /bin/bash
-{%endhighlight%}
+{%endhighlight%} 
 
 进入每个容器ifconfig 查看ip地址信息，进行hosts文件配置
 vi /etc/hosts
