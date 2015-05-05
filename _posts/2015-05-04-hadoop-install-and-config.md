@@ -36,3 +36,66 @@ ADD hadoop-2.6.0.tar.gz /usr/local/
        
 随后就可以进行docker build了，这个项目的README上已经给了提示按照上面的操作就可以，漫长的等待之后就总是惊喜不断，期间无数次断网，下载超时等问题，最后经过2个多小时终于完成了。
 
+## 2. 启动容器制作自己的镜像
+{%highlight shell%}
+docker run -i -t sequenceiq/hadoop-docker:2.6.0 /etc/bootstrap.sh -bash
+{%endhighlight%}  
+上面的命令将直接运行/etc/bootstrap.sh并启动hadoop。
+修改/usr/local/hadoop/etc/hadoop/core-site.xml
+{%highlight shell%}
+<configuration>
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://master:9000</value>
+    </property>    
+</configuration>
+{%endhighlight%}
+我们在启动其他hadoop slave的时候这个地方是需要都是写成master的地址，所以我们在这边统一修改
+修改/etc/bootstrap.sh
+将sed那一行注视点否则每次运行这个脚本都会被替换的
+退出容器后  
+{%highlight shell%}
+docker commit -a 'sunxc@vip.qq.com' -m 'add hadoop/bin to PATH' cfeb92e4eb3c  d
+evops/hadoop2.6:v0.3
+{%endhighlight%}  
+制作我们自己的镜像文件 
+{%highlight shell%} 
+docker@boot2docker:~$ docker commit -a 'sunxc@vip.qq.com' -m 'add hadoop/bin to PATH' cfeb92e4eb3c  d
+evops/hadoop2.6:v0.3
+ef9da5d858554d0d20546088cb0d20e5239ae5f4c8b36d5a1bd94c0d980698d7
+docker@boot2docker:~$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+devops/hadoop2.6    v0.3                ef9da5d85855        5 seconds ago       1.708 GB
+devops/hadoop2.6    v0.2                cf03aad60ef3        4 minutes ago       1.708 GB
+devops/hadoop2.6    v0.1                ecaca1ea44f5        2 days ago          1.708 GB
+sequenceiq/pam      centos-6.5          2e0b6343afc8        10 weeks ago        923.5 MB
+{%endhighlight%} 
+
+## 3. 启动集群环境的容器
+hadoop 集群的基本要求,其中一个是 master 结点,主要是用于运行 hadoop 程序中的 namenode、secondorynamenode 和 jobtracker（新版本名字变了） 任务。用外两个结点均为 slave 结点,其中一个是用于冗余目的,如果没有冗 余,就不能称之为 hadoop 了,所以模拟 hadoop 集群至少要有 3 个结点。这里我们先启动容器 不执行/etc/bootstrap.sh 这个脚本。  
+
+这里有一个问题：
+Docker容器中的ip地址是启动之后自动分配的，且不能手动更改
+hostname、hosts配置在容器内修改了，只能在本次容器生命周期内有效。如果容器退出了，重新启动，这两个配置将被还原。且这两个配置无法通过commit命令写入镜像
+我们搭建集群环境的时候，需要指定节点的hostname，以及配置hosts。
+这里只为学习，就手动修改hosts。只不过每次都得改，这里不知道如何处理，docker也是刚刚入门如果有知道的请高手指点一下！！
+
+启动容器
+{%highlight shell%} 
+docker run -h master --name master_host -idt devops/hadoop2.6:v0.3 /bin/bash
+docker run -h slave --name slave_host -idt devops/hadoop2.6:v0.3 /bin/bash
+docker run -h slave2 --name slave2_host -idt devops/hadoop2.6:v0.3 /bin/bash
+{%endhighlight%}
+
+进入每个容器ifconfig 查看ip地址信息，进行hosts文件配置
+vi /etc/hosts
+172.17.0.12    master
+172.17.0.13    slave
+172.17.0.14    slave2
+
+然后启动master上的节点执行/etc/bootstrap.sh
+随后在两个slave上执行/etc/bootstrap.sh
+可以看见相关的日志信息
+在master节点上通过命令hdfs dfsadmin -report查看DataNode是否正常启动
+
+以上完结！
