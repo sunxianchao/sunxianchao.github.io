@@ -121,6 +121,6 @@ java.io.IOException: Incompatible clusterIDs in /tmp/hadoop-root/dfs/data: namen
 然后重新hdfs namenode -format 即可
 
 2. 如果是执行master 上的/etc/bootstrat.sh 那么两个slave上的sshd 是需要手动执行的 否则是master 是连不上slave的 在两个slave上执行 
-{%hightlight c%}
+{%highlight c%}
 service sshd start
 {%endhighlight%}
