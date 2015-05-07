@@ -115,7 +115,7 @@ java.io.IOException: Incompatible clusterIDs in /tmp/hadoop-root/dfs/data: namen
 	at org.apache.hadoop.hdfs.server.datanode.DataNode.initStorage(DataNode.java:1311)
 	at org.apache.hadoop.hdfs.server.datanode.DataNode.initBlockPool(DataNode.java:1276)
 	at org.apache.hadoop.hdfs.server.datanode.BPOfferService.verifyAndSetNamespaceInfo(BPOfferService.java:314)
-{%endhightlight%}  
+{%endhighlight%}  
 
 进入/tmp/hadoop-root/dfs/ 将下面三个目录data  name  namesecondary当中的子目录删除，不要删除这三个目录本身
 然后重新hdfs namenode -format 即可
@@ -123,4 +123,4 @@ java.io.IOException: Incompatible clusterIDs in /tmp/hadoop-root/dfs/data: namen
 2. 如果是执行master 上的/etc/bootstrat.sh 那么两个slave上的sshd 是需要手动执行的 否则是master 是连不上slave的 在两个slave上执行 
 {%hightlight c%}
 service sshd start
-{%endhightlight%}
+{%endhighlight%}
