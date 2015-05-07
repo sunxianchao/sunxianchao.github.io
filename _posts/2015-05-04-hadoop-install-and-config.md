@@ -82,9 +82,11 @@ hostname、hosts配置在容器内修改了，只能在本次容器生命周期�
 
 启动容器
 {%highlight c%} 
-docker run -h master --name master_host -idt devops/hadoop2.6:v0.3 /bin/bash
-docker run -h slave --name slave_host -idt devops/hadoop2.6:v0.3 /bin/bash
-docker run -h slave2 --name slave2_host -idt devops/hadoop2.6:v0.3 /bin/bash
+docker run -p 9000:9000 -p 50070:50070 -p 8088:8088 -p 50010:50010 -p  50020:50020 -p 50030:50030 -h master --name master_host -it devops/hadoop2.6:v0.5 /bin/bash
+
+docker run -h slave --name slave_host -it devops/hadoop2.6:v0.5 /bin/bash
+
+docker run -h slave2 --name slave2_host -it devops/hadoop2.6:v0.5 /bin/bash
 {%endhighlight%} 
 
 进入每个容器ifconfig 查看ip地址信息，进行hosts文件配置
@@ -93,9 +95,32 @@ vi /etc/hosts
 172.17.0.13    slave
 172.17.0.14    slave2
 
+在master节点上进入HADOOP_HOME/etc/hadoop/ 
+vi slaves
+添加两个slave主机名 保存退出
 然后启动master上的节点执行/etc/bootstrap.sh
-随后在两个slave上执行/etc/bootstrap.sh
 可以看见相关的日志信息
 在master节点上通过命令hdfs dfsadmin -report查看DataNode是否正常启动
 
-以上完结！
+## 4.出现过的问题
+1. 在master上执行/etc/bootstrap.sh后 查看两个slave 发现datanode没有启动，查看日志如下信息：  
+{%highlight c%}
+2015-05-06 22:53:45,766 INFO org.apache.hadoop.hdfs.server.common.Storage: Lock on /tmp/hadoop-root/dfs/data/in_use.lock acquired by nodename 3886@slave
+2015-05-06 22:53:45,769 FATAL org.apache.hadoop.hdfs.server.datanode.DataNode: Initialization failed for Block pool <registering> (Datanode Uuid unassigned) service to master/172.17.0.2:9000. Exiting.
+java.io.IOException: Incompatible clusterIDs in /tmp/hadoop-root/dfs/data: namenode clusterID = CID-4d002d3c-f5c9-4004-8e23-3705553c3dbc; datanode clusterID = CID-f3bcc414-d2dd-4fed-ba67-34bb71f24e2f
+	at org.apache.hadoop.hdfs.server.datanode.DataStorage.doTransition(DataStorage.java:646)
+	at org.apache.hadoop.hdfs.server.datanode.DataStorage.addStorageLocations(DataStorage.java:320)
+	at org.apache.hadoop.hdfs.server.datanode.DataStorage.recoverTransitionRead(DataStorage.java:403)
+	at org.apache.hadoop.hdfs.server.datanode.DataStorage.recoverTransitionRead(DataStorage.java:422)
+	at org.apache.hadoop.hdfs.server.datanode.DataNode.initStorage(DataNode.java:1311)
+	at org.apache.hadoop.hdfs.server.datanode.DataNode.initBlockPool(DataNode.java:1276)
+	at org.apache.hadoop.hdfs.server.datanode.BPOfferService.verifyAndSetNamespaceInfo(BPOfferService.java:314)
+{%endhightlight%}  
+
+进入/tmp/hadoop-root/dfs/ 将下面三个目录data  name  namesecondary当中的子目录删除，不要删除这三个目录本身
+然后重新hdfs namenode -format 即可
+
+2. 如果是执行master 上的/etc/bootstrat.sh 那么两个slave上的sshd 是需要手动执行的 否则是master 是连不上slave的 在两个slave上执行 
+{%hightlight c%}
+service sshd start
+{%endhightlight%}
