@@ -23,10 +23,9 @@ FileInputFormat.addInputPath(job, new Path(args[0]));
 6. 接下来就是shuffle的过程了，这个过程又分为很多细节的过程  
   6.1. Partitioner（分区）这个过程就是决定由哪个reduce去处理（n 个reduce），对map输出的key对n取模得到m，那么就是第m个reduce处理生成这样的三个元素的数组{m, key, value}....  
   6.2. MemoryBuffer 内存缓冲区，每个map的结果和partition的结果都会放到内存缓存区默认是100M，阀值是0.8，如果超过80m那么就会同步到磁盘（后面的Spill）将6.1中生成的多个三元数组存放在缓冲区
-  6.3. Spill 溢写过程，在6.2中如果数据达到阀值80M内存，Spill线程就会锁住这80M的数据缓冲区，将数据写到磁盘中，每次的Spill都会生成一个数据文件
-每次Spill写到磁盘之前都会对数据key进行排序（Sort）以及合并（Combiner）的处理  
+  6.3. Spill 溢写过程，在6.2中如果数据达到阀值80M内存，Spill线程就会锁住这80M的数据缓冲区，将数据写到磁盘中，如果map生成速度大于写出速度，那么map就会 处于等待的状态，每次的Spill都会生成一个数据文件每次Spill写到磁盘之前都会对数据key进行排序（Sort）以及合并（Combiner）的处理，益写过程会调用sortAndSpill函数，如果设置了combiner就会调用combinerAndSpill函数，对结果进一步合并，下面是这两个步骤。  
  6.4. Sort 排序过程，缓冲区的数据会按照key进行排序，如果是int类型的key那么就会数字降序排列，其他就是按照字母排序，那么相同的分区（m）就会存储在一块  
- 6.5. Combiner 数据合并，如果设置了Combiner就会用combiner进行合并处理，通过此步的合并可以减少数据量的传输，Combiner函数实际上就是Reduce函数，但是Combiner是不能够处理sum、max 这类函数的（Combiner只应该用于那种Reduce的输入key/value与输出key/value类型完全一致，有的可能是要求value的形式也是一样的，比如本例中的value格式）  
+ 6.5. Combiner 数据合并，如果设置了Combiner就会在sort中调用combiner进行合并处理，通过此步的合并可以减少数据量的传输，Combiner函数实际上就是Reduce函数，但是Combiner是不能够处理sum、max 这类函数的（Combiner只应该用于那种Reduce的输入key/value与输出key/value类型完全一致，有的可能是要求value的形式也是一样的，比如本例中的value格式）  
  6.6. Merage on disk数据合并，map结束后会对Spill的文件进行多次合并，如有两个益写文件 f1：{Tom，1+Tom+Lucy} f2：{Tom，1+Tom+Jack}合并后的文件内容{Tom,1+Tom+Lucy|1+Tom+Jack},这个过程称为group，他是reduce的输入数据格式。（在这个过程中如果client设置过Combiner，也会使用Combiner来合并相同的key)  
  6.7. 至此map端的处理就结束了  
 
@@ -36,7 +35,8 @@ FileInputFormat.addInputPath(job, new Path(args[0]));
  9. 数据的合并merage，将多个益写文件进行合并处理，作为reduce的输入，将合并后的结果传给reduce函数来处理，这里的merage过程应该和map阶段的差不多，只是数据是来自不同的map而已，reduce端也会经过spill的处理，在这个阶段也会出现spill的过程，这个过程中如果你设置有Combiner，也是会启用内存达到阀值也会进行sort和combiner的过程，如果combiner对数据结果不会有影响那么就可以设置进行合并  
  10. 最终merage后的文件（在内存中或者是磁盘中）达到reduce函数，经过多次的spill的处理reduce输出的key是不会重复的。  
  11. reduce结束，得到最终的结果  
- 12. 将结果输出到指定的hdfs路径下  
+ 12. 将结果输出到指定的hdfs路径下   
+ 
  
 ### 示例
 示例是一个单表链接查询孙子和爷爷的过程数据格式：
