@@ -14,7 +14,7 @@ tags: [logback log4j]
 首先要了解jcl、jul、slf4j、log4j、logback相互是什么关系，然后来进行排除冲突的jar包，下面这个图说明了他们之间的排斥关系
 ![](http://openwebx.org/docs/images/log/xlogback.png.pagespeed.ic.nr0Lfr9tG3.png)
 因此就要在项目当中排除slf4j-log4j12这个jar包排除的过程非常简单，就是用mvn dependency:tree获取到当前间接依赖的jar包，当然如果这么简单就没必要记录了，下面来说说遇到的一些问题吧。
-
+<!--break-->
 #### 遇到的问题
 - 先说下如何排除吧在pom文件中，在项目的parent中添加下面的依赖,这会影响间接依赖
 ```
