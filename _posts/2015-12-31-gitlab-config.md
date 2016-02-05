@@ -18,6 +18,7 @@ ssh-keygen -t rsa -C "alibaba-inc"
 cat ~/.ssh/id_rsa.pub
 ````
 <!--break-->
+
 ### config配置
 配置用户名和邮箱，方便以后更新，避免每次输入用户名
 ````
